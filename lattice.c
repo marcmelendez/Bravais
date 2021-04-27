@@ -170,6 +170,7 @@ int main(int argc, char * argv[])
             return -1;
           }
         }
+        break;
       default: /* Ignore unrecognised options */
         fprintf(stderr, "Unrecognised option: %s\n", argv[i]);
     }

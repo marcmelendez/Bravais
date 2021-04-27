@@ -179,13 +179,13 @@ int Bravais(float ** pos,  /* Pointer to positions array */
   /* Unit cells on the side of the box */
   if(fillbox) {
     for(i = 0; i < 3; ++i) nx[i] = (int) ceil(L[i]/(cellsize*e[i][i]));
-    if(type == sq || type == tri) nx[2] = 1; /* 2D lattices */
+    if(type == sq || type == tri || nvectors == 2) nx[2] = 1; /* 2D lattices */
     ncells = nx[0]*nx[1]*nx[2];
     N = ncells*nbasis;
     if(npbasis > 0) N *= npbasis;
   }
   else {
-    if(type == sq || type == tri) { /* 2D lattices */
+    if(type == sq || type == tri || nvectors == 2) { /* 2D lattices */
       nx[0] = ceil(sqrt(ncells/V)*L[0]);
       nx[1] = ceil(sqrt(ncells/V)*L[1]);
       nx[2] = 1;
@@ -227,12 +227,11 @@ int Bravais(float ** pos,  /* Pointer to positions array */
                                                    + (k + basis[l][2])*e[2][d]);
             }
 
-            /* Wrap-around (triangular and hexagonal closed-packed lattices) */
-            if(type == tri || type == hcp)
-              if(r[0] > L[0]/2) r[0] -= L[0];
+            /* Apply periodic boundary conditions */
+            for(d = 0; d < 3; ++d) r[d] -= L[d]*floorf(r[d]/L[d] + 0.5f);
 
             /* No third dimension for 2D lattices */
-            if(type == sq || type == tri)
+            if(type == sq || type == tri || nvectors == 2)
               r[2] = 0;
 
             /* Output position */
