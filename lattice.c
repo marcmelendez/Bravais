@@ -196,5 +196,8 @@ int main(int argc, char * argv[])
 
   printf("\n#");
 
+  free(position);
+  position = NULL;
+
   return 0;
 }
