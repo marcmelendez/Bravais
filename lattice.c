@@ -188,8 +188,8 @@ int main(int argc, char * argv[])
 
   for(int i = 0; i < N; ++i) {
     printf("%f\t%f\t%f", position[5*i], position[5*i + 1], position[5*i + 2]);
-    if(radius > 0) printf("\t%f", position[5*i + 3]);
-    if(colour > 0) printf("\t%d", (int) position[5*i + 4]);
+    if(position[5*i + 3] > 0) printf("\t%f", position[5*i + 3]);
+    if(position[5*i + 4] > 0) printf("\t%d", (int) position[5*i + 4]);
     printf("\n");
   }
 

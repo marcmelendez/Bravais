@@ -245,10 +245,10 @@ int Bravais(float ** position,  /* Pointer to positions array */
                                                + pbasis[n][2]*e[2][d]);
                 if(pbasis[n][3] > 0)
                   pos[5*nbasis*npbasis*(nx[0]*nx[1]*k + nx[0]*j + i)
-                         + 5*npbasis*l + 5*n + 3] = stretchfactor[0]*pbasis[n][3];
+                         + 5*npbasis*l + 5*n + 3] = pbasis[n][3];
                 if(pbasis[n][4] > 0)
                   pos[5*nbasis*npbasis*(nx[0]*nx[1]*k + nx[0]*j + i)
-                         + 5*npbasis*l + 5*n + 4] = stretchfactor[0]*pbasis[n][4];
+                         + 5*npbasis*l + 5*n + 4] = pbasis[n][4];
               }
             }
             else { /* Output lattice node */
