@@ -18,7 +18,7 @@ typedef enum {false=0, true} bool;
 #define MAXBASIS 1000 /* Maximum number of user basis elements */
 
 /***** Create Bravais lattice *****/
-int Bravais(float ** pos,  /* Pointer to positions array */
+int Bravais(float ** position,  /* Pointer to positions array */
             lattice type, /* Lattice (sc, bcc, fcc, dia, hcp, sq, tri) */
             bool fillbox, float Nsep, /* If fill = trupe, Nsep is number of nodes,
                                           otherwise, Nsep is minimum separation between atoms */
@@ -68,9 +68,9 @@ int Bravais(float ** pos,  /* Pointer to positions array */
   if(basisfile != NULL) {
     /* Read data from file */
     while(fgets(buffer, 250, basisfile) && npbasis < MAXBASIS) {
-      count = sscanf(buffer, "%f %f %f %f", &pbasis[npbasis][0],
+      count = sscanf(buffer, "%f %f %f %f %f", &pbasis[npbasis][0],
                              &pbasis[npbasis][1], &pbasis[npbasis][2],
-                             &pbasis[npbasis][3]);
+                             &pbasis[npbasis][3], &pbasis[npbasis][4]);
       if(count > 0) npbasis++;
     }
     fclose(basisfile);
@@ -197,9 +197,9 @@ int Bravais(float ** pos,  /* Pointer to positions array */
     }
   }
 
-
-  *pos = (float *) realloc(*pos, 5*N*sizeof(float));
-  if(*pos == NULL) {fprintf(stderr, "Error allocating memory.\n"); exit(-1);}
+  *position = (float *) realloc(*position, 100*N*sizeof(float));
+  if(*position == NULL) {fprintf(stderr, "Error allocating memory.\n"); exit(-1);}
+  float * pos = *position;
 
   /* Stretch factors */
   for(i = 0; i < 3; ++i) stretchfactor[i] = L[i]/(nx[i]*e[i][i]);
@@ -238,23 +238,23 @@ int Bravais(float ** pos,  /* Pointer to positions array */
             if(npbasis > 0) {
               for(n = 0; n < npbasis; n++) { /* Output user basis */
                 for(d = 0; d < 3; ++d)
-                  pos[0][5*nbasis*npbasis*(nx[0]*nx[1]*k + nx[0]*j + i)
+                  pos[5*nbasis*npbasis*(nx[0]*nx[1]*k + nx[0]*j + i)
                          + 5*npbasis*l + 5*n + d]
                     = r[d] + stretchfactor[d]*(  pbasis[n][0]*e[0][d]
                                                + pbasis[n][1]*e[1][d]
                                                + pbasis[n][2]*e[2][d]);
                 if(pbasis[n][3] > 0)
-                  pos[0][5*nbasis*npbasis*(nx[0]*nx[1]*k + nx[0]*j + i)
+                  pos[5*nbasis*npbasis*(nx[0]*nx[1]*k + nx[0]*j + i)
                          + 5*npbasis*l + 5*n + 3] = stretchfactor[0]*pbasis[n][3];
                 if(pbasis[n][4] > 0)
-                  pos[0][5*nbasis*npbasis*(nx[0]*nx[1]*k + nx[0]*j + i)
+                  pos[5*nbasis*npbasis*(nx[0]*nx[1]*k + nx[0]*j + i)
                          + 5*npbasis*l + 5*n + 4] = stretchfactor[0]*pbasis[n][4];
               }
             }
             else { /* Output lattice node */
-              for(d = 0; d < 3; ++d) pos[0][5*nbasis*(nx[0]*nx[1]*k + nx[0]*j + i) + 5*l + d] = r[d];
-              if(radius >= 0) pos[0][5*nbasis*(nx[0]*nx[1]*k + nx[0]*j + i) + 5*l + 3] = radius;
-              if(colour >= 0) pos[0][5*nbasis*(nx[0]*nx[1]*k + nx[0]*j + i) + 5*l + 4] = colour;
+              for(d = 0; d < 3; ++d) pos[5*nbasis*(nx[0]*nx[1]*k + nx[0]*j + i) + 5*l + d] = r[d];
+              if(radius >= 0) pos[5*nbasis*(nx[0]*nx[1]*k + nx[0]*j + i) + 5*l + 3] = radius;
+              if(colour >= 0) pos[5*nbasis*(nx[0]*nx[1]*k + nx[0]*j + i) + 5*l + 4] = colour;
             }
             node++;
           }

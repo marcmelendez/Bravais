@@ -55,7 +55,6 @@ unsigned int hash(char word[])
 int main(int argc, char * argv[])
 {
   int N = 1000; /* Number of lattice nodes */
-  int i; /* Dummy index */
   lattice type = sc; /* Lattice type */
   bool keepaspect = false; /* Do not keep aspect ratio (if unnecessary) */
   bool fillbox = false; /* No need to fill the box */
@@ -73,7 +72,7 @@ int main(int argc, char * argv[])
   }
 
   /*** Read command-line options ***/
-  for(i = 1; i < argc; i++) {
+  for(int i = 1; i < argc; i++) {
     switch(hash(argv[i])) {
       case 0x74797065: /* --type, -t Lattice type */
       case 0x2D74:
@@ -187,7 +186,7 @@ int main(int argc, char * argv[])
               basisfile, vectorsfile,
               keepaspect);
 
-  for(i = 0; i < N; ++i) {
+  for(int i = 0; i < N; ++i) {
     printf("%f\t%f\t%f", position[5*i], position[5*i + 1], position[5*i + 2]);
     if(radius > 0) printf("\t%f", position[5*i + 3]);
     if(colour > 0) printf("\t%d", (int) position[5*i + 4]);
@@ -197,7 +196,6 @@ int main(int argc, char * argv[])
   printf("\n#");
 
   free(position);
-  position = NULL;
 
   return 0;
 }
